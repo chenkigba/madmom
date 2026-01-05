@@ -129,6 +129,15 @@ This is equivalent to these steps::
     cd madmom
     git submodule update --init --remote
 
+If you did not initialize the submodule (or you installed from a source
+distribution without git metadata), madmom can **auto-download the pinned model
+revision on first use** and cache it in a user-writable directory. You can
+control this via environment variables:
+
+- ``MADMOM_MODELS_DIR``: set a custom models cache directory
+- ``MADMOM_NO_MODEL_DOWNLOAD=1``: disable auto-download (must provide models yourself)
+- ``MADMOM_QUIET_MODEL_DOWNLOAD=1``: disable download progress messages
+
 Then you can install the package in development mode using pip::
 
     pip install -e .

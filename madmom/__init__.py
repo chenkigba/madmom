@@ -15,13 +15,20 @@ Please see the README for further details of this package.
 
 import doctest
 
-from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError, version
 
-# import all packages
-from . import audio, evaluation, features, io, ml, models, processors, utils
+# define a version variable (works both installed and in-source)
+try:
+    __version__ = version("madmom")
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "0.17.dev0"
 
-# define a version variable
-__version__ = distribution("madmom")  .version
+# import core packages (avoid hard-failing if optional model submodule is absent)
+from . import audio, evaluation, features, io, ml, processors, utils
+try:  # pragma: no cover
+    from . import models  # type: ignore
+except Exception:
+    models = None  # noqa: N816
 
 # Create a doctest output checker that optionally ignores the unicode string
 # literal.
