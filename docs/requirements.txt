@@ -1,4 +1,7 @@
-# fake requirements for readthedocs
-cython
-mido
-numpydoc
+# Sphinx documentation build dependencies
+sphinx>=7.0
+numpydoc>=1.5
+mido>=1.3
+cython>=3.0
+numpy>=1.26
+scipy>=1.11

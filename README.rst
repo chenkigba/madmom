@@ -59,13 +59,13 @@ you choose, please make sure that all prerequisites are installed.
 Prerequisites
 -------------
 
-To install the ``madmom`` package, you must have either Python 2.7 or Python
-3.5 or newer and the following packages installed:
+To install the ``madmom`` package, you must have **Python 3.11 or newer** and
+the following packages installed:
 
-- `numpy <http://www.numpy.org>`_
-- `scipy <http://www.scipy.org>`_
-- `cython <http://www.cython.org>`_
-- `mido <https://github.com/olemb/mido>`_
+- `numpy <http://www.numpy.org>`_ (>=1.26)
+- `scipy <http://www.scipy.org>`_ (>=1.11)
+- `cython <http://www.cython.org>`_ (>=3.0, build-time only)
+- `mido <https://github.com/olemb/mido>`_ (>=1.3)
 
 In order to test your installation, process live audio input, or have improved
 FFT performance, additionally install these packages:
@@ -77,10 +77,6 @@ FFT performance, additionally install these packages:
 If you need support for audio files other than ``.wav`` with a sample rate of
 44.1kHz and 16 bit depth, you need ``ffmpeg`` (``avconv`` on Ubuntu Linux has
 some decoding bugs, so we advise not to use it!).
-
-Please refer to the `requirements.txt <requirements.txt>`_ file for the minimum
-required versions and make sure that these modules are up to date, otherwise it
-can result in unexpected errors or false computations!
 
 Install from package
 --------------------
@@ -95,6 +91,11 @@ Package Index) <https://pypi.python.org/pypi>`_::
 
     pip install madmom
 
+Or using `uv <https://github.com/astral-sh/uv>`_ (recommended for faster
+installation)::
+
+    uv pip install madmom
+
 This includes the latest code and trained models and will install all
 dependencies automatically.
 
@@ -107,9 +108,8 @@ files and scripts globally. Alternatively you can install the package locally
 This will also install the executable programs to a common place (e.g.
 ``/usr/local/bin``), which should be in your ``$PATH`` already. If you
 installed the package locally, the programs will be copied to a folder which
-might not be included in your ``$PATH`` (e.g. ``~/Library/Python/2.7/bin``
-on Mac OS X or ``~/.local/bin`` on Ubuntu Linux, ``pip`` will tell you). Thus
-the programs need to be called explicitely or you can add their install path
+might not be included in your ``$PATH`` (e.g. ``~/.local/bin`` on Linux). Thus
+the programs need to be called explicitly or you can add their install path
 to your ``$PATH`` environment variable::
 
     export PATH='path/to/scripts':$PATH
@@ -129,13 +129,19 @@ This is equivalent to these steps::
     cd madmom
     git submodule update --init --remote
 
-Then you can simply install the package in development mode::
+Then you can install the package in development mode using pip::
 
-    python setup.py develop --user
+    pip install -e .
+
+Or using uv (recommended)::
+
+    uv venv --python 3.11
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    uv pip install -e ".[dev]"
 
 To run the included tests::
 
-    python setup.py pytest
+    pytest
 
 Upgrade of existing installations
 ---------------------------------
@@ -149,13 +155,17 @@ Upgrade a package
 
 Simply upgrade the package via pip::
 
-    pip install --upgrade madmom [--user]
+    pip install --upgrade madmom
+
+Or using uv::
+
+    uv pip install --upgrade madmom
 
 If some of the provided programs or models changed (please refer to the
 CHANGELOG) you should first uninstall the package and then reinstall::
 
     pip uninstall madmom
-    pip install madmom [--user]
+    pip install madmom
 
 Upgrade from source
 ~~~~~~~~~~~~~~~~~~~
@@ -169,9 +179,9 @@ To update the models contained in the submodule::
     git submodule update
 
 If any of the ``.pyx`` or ``.pxd`` files changed, you have to recompile the
-modules with Cython::
+modules with Cython. The simplest way is to reinstall in development mode::
 
-    python setup.py build_ext --inplace
+    pip install -e .
 
 Package structure
 -----------------
